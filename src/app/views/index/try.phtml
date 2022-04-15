@@ -1,0 +1,40 @@
+<div class="input_fields_wrap">
+    <button class="add_field_button">Add Variaction</button>
+    <div><input type="text" name="mytext[]"></div>
+</div>
+<script>
+    $(document).ready(function() {
+        var wrapper = $(".input_fields_wrap"); //Fields wrapper
+        var add_button = $(".add_field_button"); //Add button ID
+        $(add_button).click(function(e) { //on add input button click
+            e.preventDefault();
+            $(wrapper).append('<div class="border border-primary p-1">\
+            <a href="#" class="remove_variation text-danger">Remove Variation</a>\
+                <form class="form">\
+                    <a href="#" class="add_field text-info">Add More Fields</a>\
+                    <div>\
+                        <input type="text" placeholder="Field name" name="fields[]"/>\
+                        <input placeholder="Value" type="text" name="values[]"/>\
+                        <a href="#" class="remove_field text-danger">Remove</a>\
+                    <div>\
+                </form></div>');
+        });
+
+        $(wrapper).on("click", ".remove_field", function(e) {
+            e.preventDefault();
+            $(this).parent('div').remove();
+        })
+        $(wrapper).on("click", ".remove_variation", function(e) {
+            e.preventDefault();
+            $(this).parent('div').remove();
+        })
+        $(wrapper).on("click", ".add_field", function(e) {
+            e.preventDefault();
+            $(this).parent('form').append('<div>\
+            <input type="text" placeholder="Field name" name="fields[]"/>\
+            <input placeholder="Value" type="text" name="values[]"/>\
+            <a href="#" class="remove_field text-danger">Remove</a>\
+            </div>');
+        })
+    });
+</script>

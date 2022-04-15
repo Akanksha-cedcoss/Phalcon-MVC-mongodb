@@ -1,0 +1,35 @@
+<?php
+
+echo "<h1>Hello World</h1>";
+echo "<br>";
+echo "<hr>";
+
+echo PHP_EOL;
+?>
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Username</th>
+            <th scope="col">Name</th>
+            <th scope="col">E-mail</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+            foreach($users as $k=>$user){
+                echo '<tr>
+                <th scope="row">'.$k.'</th>
+                <td>'.$user['username'].'</td>
+                <td>'.$user['name'].'</td>
+                <td>'.$user['email'].'</td>
+                <td>
+                <a href="#">Edit</a>
+                <a href="#">Delete</a></td>
+            </tr>';
+            }
+        ?>
+        
+    </tbody>
+</table>
