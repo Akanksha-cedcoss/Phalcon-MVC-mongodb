@@ -2,7 +2,6 @@
 
     <div class="col-md-12">
         <form id="form" action="http://localhost:8080/index/addNewProduct" method="post">
-            <input name="variation" hidden value="" id="variation">
             <h3> Add New Product</h3>
             <div id="field">
                 <div id="field0">
@@ -49,9 +48,16 @@
             <!-- Button -->
             <div class="form-group">
                 <div class="col-md-4">
-                <div class="input_fields_wrap">
-                    <button class="add_field_button btn bg-info">Add Variaction</button>
-                </div>
+                    <h1>Add Meta Information</h1>
+                    <div class="input_meta_wrap p-2">
+                        <button class="add_meta_field_button btn border border-dark">
+                            <img style=" height:20px ;width: 20px" src="https://media.istockphoto.com/vectors/black-plus-sign-positive-symbol-vector-id688550958?k=20&m=688550958&s=170667a&w=0&h=vwmBL25oWU3A26BASebi4wENUZ23pnYz9QKnBiw4EvE=">
+                        </button>
+                    </div>
+                    <h1>Add Variation</h1>
+                    <div class="input_fields_wrap p-2">
+                        <button class="add_field_button btn border border-dark"><img style=" height:20px ;width: 20px" src="https://media.istockphoto.com/vectors/black-plus-sign-positive-symbol-vector-id688550958?k=20&m=688550958&s=170667a&w=0&h=vwmBL25oWU3A26BASebi4wENUZ23pnYz9QKnBiw4EvE="></button>
+                    </div>
                 </div>
             </div>
 
@@ -64,27 +70,36 @@
 
 
 <script>
-    
     $(document).ready(function() {
-        var wrapper = $(".input_fields_wrap"); 
-        var meta_field = $(".input_meta_wrap"); 
-        var add_button = $(".add_field_button"); 
-        var variation = 0;
+        var wrapper = $(".input_fields_wrap");
+        var meta_div = $(".input_meta_wrap");
+        var add_button = $(".add_field_button");
+        var add_meta_button = $(".add_meta_field_button");
+        $(add_meta_button).click(function(e) {
+            e.preventDefault();
+            $(meta_div).append('<div class="border border-primary p-2 m-2">\
+                        <button class="remove_field btn border border-dark">\
+                            <img style="display:inline; height:20px ;width: 20px" src="https://media.istockphoto.com/vectors/black-minus-sign-negative-symbol-vector-id688548090?k=20&m=688548090&s=170667a&w=0&h=xVmB2eSVy3nX8zpGOxzo9loLO1FMglDGUx8vX0arlI0=">\
+                        </button>\
+                    <div class="m-2">\
+                        <input type="text" placeholder="Field name" name="meta_fields[]"/>\
+                        <input placeholder="Value" type="text" name="meta_values[]"/>\
+                      <div></div>');
+        });
         $(add_button).click(function(e) {
             e.preventDefault();
-            $(wrapper).append('<div data="'+variation+'" class="border border-primary">\
-                    <a href="#" class="remove_variation text-danger">Remove Variation</a>\
-                    <a href="#" class="add_field text-info">Add More Fields</a>\
+            $(wrapper).append('<div class="border border-primary p-2 m-2">\
+                        <button class="remove_variation btn border border-dark">\
+                            <img style="display:inline; height:20px ;width: 20px" src="https://media.istockphoto.com/vectors/black-minus-sign-negative-symbol-vector-id688548090?k=20&m=688548090&s=170667a&w=0&h=xVmB2eSVy3nX8zpGOxzo9loLO1FMglDGUx8vX0arlI0=">\
+                        </button>\
                     <div>\
-                        <input type="text" placeholder="Field name" name="fields'+variation+'[]"/>\
-                        <input placeholder="Value" type="text" name="values'+variation+'[]"/>\
-                        <a href="#" class="remove_field text-danger">Remove</a>\
+                        <input type="text" placeholder="Color" name="values[]"/>\
+                        <input placeholder="Size" type="text" name="values[]"/>\
+                        <input placeholder="Price" type="text" name="values[]"/>\
                     <div>\</div>');
-                variation+=1;
-            $("#variation").val(variation);
         });
 
-        $(wrapper).on("click", ".remove_field", function(e) {
+        $(document).on("click", ".remove_field", function(e) {
             e.preventDefault();
             $(this).parent('div').remove();
         })
@@ -96,8 +111,8 @@
             e.preventDefault();
             let count = $(this).parent('div').attr("data");
             $(this).parent('div').append('<div>\
-            <input type="text" placeholder="Field name" name="fields'+count+'[]"/>\
-            <input placeholder="Value" type="text" name="values'+count+'[]"/>\
+            <input type="text" placeholder="Field name" name="fields' + count + '[]"/>\
+            <input placeholder="Value" type="text" name="values' + count + '[]"/>\
             <a href="#" class="remove_field text-danger">Remove</a>\
             </div>');
         })

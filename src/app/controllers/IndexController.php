@@ -39,18 +39,20 @@ class IndexController extends Controller
     public function addNewProductAction()
     {
         if ($_POST) {
-            $variation = $this->request->getPost('variation');
+            $meta_fields = $this->request->getPost('meta_fields');
+            $meta_values = $this->request->getPost('meta_values');
+            $meta_information = array();
+            foreach ($meta_fields as $key => $field) {
+                $meta_information[$field] = $meta_values[$key];
+            }
             $variactions = array();
-            for($i=0; $i<$variation; $i++) {
-                // die('field'.$i.'');
-                $fields = $this->request->getPost('fields'.$i.'');
-                $values = $this->request->getPost('values'.$i.'');
-                // die($fields);
-                $var = array();
-                foreach($fields as $k=>$v){
-                    $var[$v] = $values[$k];
-                }
-                array_push($variactions, $var);
+            $variation_values = $this->request->getPost('values');
+            for($i=0; $i<count($variation_values); $i++){
+                array_push($variactions, array(
+                    "color"=> $variation_values[$i],
+                    "size"=>$variation_values[++$i],
+                    "price"=>$variation_values[++$i],
+                ));
             }
             $collection = $this->di->get('mongo')->user;
             $insertOneResult = $collection->insertOne([
@@ -58,11 +60,12 @@ class IndexController extends Controller
                 "category" => $this->request->getPost('category'),
                 "price" => $this->request->getPost('price'),
                 "stock" => $this->request->getPost('stock'),
-                "additional" => $variactions
+                "additional" => array(
+                    "meta_information"=>$meta_information,
+                    "variactions"=>$variactions
+                )
             ]);
-            printf("Inserted %d document(s)\n", $insertOneResult->getInsertedCount());
-            var_dump($insertOneResult->getInsertedId());
-            die('this');
+            $this->response->setContent("Product Added Successfully");
         }
     }
     public function addUser()
