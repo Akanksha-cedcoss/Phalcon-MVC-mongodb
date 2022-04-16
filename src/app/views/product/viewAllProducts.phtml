@@ -1,0 +1,31 @@
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Category</th>
+            <th scope="col">Price</th>
+            <th scope="col">Stock</th>
+            <th scope="col">Additional</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        foreach ($products as $k => $product) {
+            echo '<tr>
+                <th scope="row">' . $k . '</th>
+                <td>' . $product->name . '</td>
+                <td>' . $product->category . '</td>
+                <td>' . $product->price . '</td>
+                <td>' . $product->stock . '</td>
+                <td><a href="#" class="btn btn-info">View</a></td>
+                <td>
+                <a href="http://localhost:8080/product/editProduct/' . $product->_id . '">Edit</a>
+                <a href="http://localhost:8080/product/deleteProduct/' . $product->_id . '">Delete</a></td>
+            </tr>';
+        }
+        ?>
+
+    </tbody>
+</table>

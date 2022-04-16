@@ -12,20 +12,24 @@ class IndexController extends Controller
         $users = array();
         foreach ($cursor as $res) {
             array_push($users, array(
-                'username' => $res->username,
+                'id' => $res->_id,
                 'name' => $res->name,
-                'email' => $res->email
+                'category' => $res->category,
+                'price' => $res->price,
+                'stock' => $res->stock,
+                'additional' => $res->additional,
             ));
         };
         $this->view->users = $users;
+        $product = new Product;
+        $this->view->products = $product->getAllProducts();
     }
     public function tryAction()
     {
     }
     public function viewAllProduct()
     {
-        $collection = $this->mongo->user;
-        $cursor = $collection->find();
+        
         $users = array();
         foreach ($cursor as $res) {
             array_push($users, array(
@@ -55,6 +59,7 @@ class IndexController extends Controller
                 ));
             }
             $collection = $this->di->get('mongo')->user;
+            
             $insertOneResult = $collection->insertOne([
                 "name" => $this->request->getPost('name'),
                 "category" => $this->request->getPost('category'),
