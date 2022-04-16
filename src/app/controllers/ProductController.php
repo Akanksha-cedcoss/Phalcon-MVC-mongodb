@@ -5,6 +5,11 @@ use Phalcon\Mvc\Controller;
 
 class ProductController extends Controller
 {
+    /**
+     * view all products
+     *
+     * @return void
+     */
     public function viewAllProductsAction()
     {
         $Product = new Product;
@@ -16,6 +21,12 @@ class ProductController extends Controller
             $this->view->products = $Product->getAllProducts();
         }
     }
+    /**
+     * filter form data from post
+     *
+     * @param [type] $post
+     * @return array
+     */
     public function filterFormData($post)
     {
         $meta_fields = $post['meta_fields'];
@@ -47,6 +58,12 @@ class ProductController extends Controller
         );
         return $product;
     }
+    /**
+     * edit/update product by id
+     *
+     * @param [type] $product_id
+     * @return void
+     */
     public function editProductAction($product_id)
     {
         $product = new Product;
@@ -58,12 +75,23 @@ class ProductController extends Controller
             $this->response->redirect("product/viewAllProducts");
         }
     }
+    /**
+     * delete product by id
+     *
+     * @param [type] $id
+     * @return void
+     */
     public function deleteProductAction($id)
     {
         $product = new Product;
         $product->deleteProductById($id);
         $this->response->redirect("product/viewAllProducts");
     }
+    /**
+     * add new product
+     *
+     * @return void
+     */
     public function addNewProductAction()
     {
         if ($_POST) {
@@ -73,6 +101,11 @@ class ProductController extends Controller
             $this->response->redirect("product/viewAllProducts");
         }
     }
+    /**
+     * get product's additional data
+     *
+     * @return void
+     */
     public function getProductAdditionalDataAction()
     {
         if ($this->request->isAjax()) {
