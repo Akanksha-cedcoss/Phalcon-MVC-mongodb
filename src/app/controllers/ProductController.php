@@ -7,47 +7,79 @@ class ProductController extends Controller
 {
     public function viewAllProductsAction()
     {
-        $product = new Product;
-        $this->view->products = $product->getAllProducts();
+        $Product = new Product;
+
+        if ($_POST) {
+            $name = $this->request->getPost("search");
+            $this->view->products = $Product->getProductByName($name);
+        } else {
+            $this->view->products = $Product->getAllProducts();
+        }
+    }
+    public function filterFormData($post)
+    {
+        $meta_fields = $post['meta_fields'];
+        $meta_values = $post['meta_values'];
+        $meta_information = array();
+        foreach ($meta_fields as $key => $field) {
+            $meta_information[$field] = $meta_values[$key];
+        }
+        $variation = $post['variation'];
+        $variactions = array();
+        for ($i = 0; $i < $variation; $i++) {
+            $fields = $post['fields' . $i . ''];
+            $values = $post['values' . $i . ''];
+            $var = array();
+            foreach ($fields as $k => $v) {
+                $var[$v] = $values[$k];
+            }
+            array_push($variactions, $var);
+        }
+        $product = array(
+            "name" => $post['name'],
+            "category" => $post['category'],
+            "price" => $post['price'],
+            "stock" => $post['stock'],
+            "additional" => array(
+                "meta_information" => $meta_information,
+                "variations" => $variactions
+            )
+        );
+        return $product;
     }
     public function editProductAction($product_id)
     {
         $product = new Product;
         $this->view->product = $product->getProductById($product_id);
+        if ($_POST) {
+            $Product = $this->filterFormData($this->request->getPost());
+            $product = new Product;
+            $product->updateProductById($product_id, $Product);
+            $this->response->redirect("product/viewAllProducts");
+        }
     }
     public function deleteProductAction($id)
     {
+        $product = new Product;
+        $product->deleteProductById($id);
+        $this->response->redirect("product/viewAllProducts");
     }
     public function addNewProductAction()
     {
         if ($_POST) {
-            $meta_fields = $this->request->getPost('meta_fields');
-            $meta_values = $this->request->getPost('meta_values');
-            $meta_information = array();
-            foreach ($meta_fields as $key => $field) {
-                $meta_information[$field] = $meta_values[$key];
-            }
-            $variactions = array();
-            $variation_values = $this->request->getPost('values');
-            for ($i = 0; $i < count($variation_values); $i++) {
-                array_push($variactions, array(
-                    "color" => $variation_values[$i],
-                    "size" => $variation_values[++$i],
-                    "price" => $variation_values[++$i],
-                ));
-            }
+            $Product = $this->filterFormData($this->request->getPost());
             $product = new Product;
-            $product->addNewProduct(array(
-                "name" => $this->request->getPost('name'),
-                "category" => $this->request->getPost('category'),
-                "price" => $this->request->getPost('price'),
-                "stock" => $this->request->getPost('stock'),
-                "additional" => array(
-                    "meta_information" => $meta_information,
-                    "variactions" => $variactions
-                )
-            ));
-            $this->response->setContent("Product Added Successfully");
+            $product->addNewProduct($Product);
+            $this->response->redirect("product/viewAllProducts");
+        }
+    }
+    public function getProductAdditionalDataAction()
+    {
+        if ($this->request->isAjax()) {
+            $id = $this->request->getPost('product_id');
+            $Product = new Product;
+            $product = $Product->getProductById($id);
+            return json_encode($product->additional);
         }
     }
 }

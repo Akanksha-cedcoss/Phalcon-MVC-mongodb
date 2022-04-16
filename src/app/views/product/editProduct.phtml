@@ -1,18 +1,10 @@
 <?php
-echo json_encode($product->additional);
-// foreach($product->additional->variation as $k=>$property){
-//     foreach($property as $key=>$val){
-//         echo '=>'.$val;
-//     }
-
-// }
-// die;
+echo json_encode($product);
 ?>
 <div class="col-xs-12">
-
     <div class="col-md-12">
         <form id="form" method="post">
-            <input name="variation" hidden value="" id="variation">
+            <input name="variation" hidden value="<?php echo count($product->additional->variations) ?>" id="variation">
             <h3> Update Product</h3>
             <div id="field">
                 <div id="field0">
@@ -79,41 +71,33 @@ echo json_encode($product->additional);
                         }
                         ?>
                     </div>
-                    <h1>Add Variation</h1>
+                    <h1>Update Variation</h1>
                     <div class="input_fields_wrap p-2">
                         <button class="add_field_button btn border border-dark"><img style=" height:20px ;width: 20px" src="https://media.istockphoto.com/vectors/black-plus-sign-positive-symbol-vector-id688550958?k=20&m=688550958&s=170667a&w=0&h=vwmBL25oWU3A26BASebi4wENUZ23pnYz9QKnBiw4EvE="></button>
                         <?php
-                        if (isset($product->additional->variactions)) {
-                        //     '<div data="' + variation + '" class="border border-primary p-2 m-2">\
-                        //     <button class="remove_variation btn border border-danger">\
-                        //         <img style="display:inline; height:20px ;width: 20px" src="https://media.istockphoto.com/vectors/black-minus-sign-negative-symbol-vector-id688548090?k=20&m=688548090&s=170667a&w=0&h=xVmB2eSVy3nX8zpGOxzo9loLO1FMglDGUx8vX0arlI0=">\
-                        //     </button>\
-                        //     <button class="add_field btn border border-dark">\
-                        //         <img style=" height:20px ;width: 20px" src="https://media.istockphoto.com/vectors/black-plus-sign-positive-symbol-vector-id688550958?k=20&m=688550958&s=170667a&w=0&h=vwmBL25oWU3A26BASebi4wENUZ23pnYz9QKnBiw4EvE=">\
-                        //     </button>\
-                        //   <div class="m-2">\
-                        //   <input type="text" placeholder="Field name" name="fields' + variation + '[]"/>\
-                        //     <input placeholder="Value" type="text" name="values' + variation + '[]"/>\
-                        //     <button class="remove_field btn border border-dark">\
-                        //         <img style="display:inline; height:20px ;width: 20px" src="https://media.istockphoto.com/vectors/black-minus-sign-negative-symbol-vector-id688548090?k=20&m=688548090&s=170667a&w=0&h=xVmB2eSVy3nX8zpGOxzo9loLO1FMglDGUx8vX0arlI0=">\
-                        //     </button>\
-                        //   <div>\
-                        // </div>'
-                        $variations = $product->additional->variactions;
-                            foreach ($product->additional->variactions as $key=>$variation) {
-                                echo '<div data="' + $key + '" class="border border-primary p-2 m-2">\
-                                <button class="remove_variation btn border border-danger">\
-                                    <img style="display:inline; height:20px ;width: 20px" src="https://media.istockphoto.com/vectors/black-minus-sign-negative-symbol-vector-id688548090?k=20&m=688548090&s=170667a&w=0&h=xVmB2eSVy3nX8zpGOxzo9loLO1FMglDGUx8vX0arlI0=">\
-                                </button>\
-                                <button class="add_field btn border border-dark">\
-                                    <img style=" height:20px ;width: 20px" src="https://media.istockphoto.com/vectors/black-plus-sign-positive-symbol-vector-id688550958?k=20&m=688550958&s=170667a&w=0&h=vwmBL25oWU3A26BASebi4wENUZ23pnYz9QKnBiw4EvE=">\
+                        if (isset($product->additional->variations)) {
+                            $i = 0;
+                            $variations = $product->additional->variations;
+                            foreach ($product->additional->variations as $variation) {
+                                echo '<div data="' . $i . '" class="border border-primary p-2 m-2">
+                                <button class="remove_variation btn border border-danger">
+                                    <img style="display:inline; height:20px ;width: 20px" src="https://media.istockphoto.com/vectors/black-minus-sign-negative-symbol-vector-id688548090?k=20&m=688548090&s=170667a&w=0&h=xVmB2eSVy3nX8zpGOxzo9loLO1FMglDGUx8vX0arlI0=">
+                                </button>
+                                <button class="add_field btn border border-dark">
+                                    <img style=" height:20px ;width: 20px" src="https://media.istockphoto.com/vectors/black-plus-sign-positive-symbol-vector-id688550958?k=20&m=688550958&s=170667a&w=0&h=vwmBL25oWU3A26BASebi4wENUZ23pnYz9QKnBiw4EvE=">
                                 </button>';
                                 foreach ($variation as $key => $val) {
-                                    echo '<div><input type="text" placeholder="Color" name="values[]" value="' . $key . '">
-                                    <input placeholder="Size" type="text" name="values[]" value="' . $val . '"></div>';
+                                    echo '<div class="m-2">
+                                    <input type="text" placeholder="Color" name="fields' . $i . '[]" value="' . $key . '">
+                                    <input placeholder="Size" type="text" name="values' . $i . '[]" value="' . $val . '">
+                                    <button class="remove_field btn border border-dark">
+                                        <img style="display:inline; height:20px ;width: 20px" src="https://media.istockphoto.com/vectors/black-minus-sign-negative-symbol-vector-id688548090?k=20&m=688548090&s=170667a&w=0&h=xVmB2eSVy3nX8zpGOxzo9loLO1FMglDGUx8vX0arlI0=">
+                                    </button>
+                                    </div>';
                                 }
+                                $i += 1;
+                                echo '</div>';
                             }
-                            echo '</div>';
                         }
                         ?>
                     </div>
@@ -121,7 +105,7 @@ echo json_encode($product->additional);
             </div>
 
             <br><br>
-            <input type="submit" class="btn btn-success" value="Add product">
+            <input type="submit" class="btn btn-success" value="Update product">
         </form>
     </div>
 
@@ -134,7 +118,7 @@ echo json_encode($product->additional);
         var meta_div = $(".input_meta_wrap");
         var add_button = $(".add_field_button");
         var add_meta_button = $(".add_meta_field_button");
-        var variation = 0;
+        var variation = parseInt($("#variation").val());
         $(add_meta_button).click(function(e) {
             e.preventDefault();
             $(meta_div).append('<div class="border border-primary p-2 m-2">\

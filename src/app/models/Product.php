@@ -13,6 +13,10 @@ class Product extends Model
     {
         $insertOneResult = $this->collection->insertOne($product);
     }
+    public function getProductByName($name)
+    {
+        return $this->collection->find(['name'=>$name]);
+    }
     public function getAllProducts()
     {
         return $this->collection->find();
@@ -24,5 +28,9 @@ class Product extends Model
     public function getProductById($product_id)
     {
         return $this->collection->findOne(['_id' => new MongoDB\BSON\ObjectID($product_id)]);
+    }
+    public function updateProductById($product_id, $updatedData)
+    {
+        $updateResult = $this->collection->updateOne(['_id' => new MongoDB\BSON\ObjectID($product_id)], ['$set' => $updatedData]);
     }
 }
