@@ -74,6 +74,8 @@ echo PHP_EOL;
         $(document).on("click", ".view_details", function(e) {
             e.preventDefault();
             var product_id = $(this).attr("data");
+            $('div.meta-tag').html('');
+            $('div.variation-tag').html('');
             $.ajax({
                     method: "POST",
                     url: "http://localhost:8080/product/getProductAdditionalData",
