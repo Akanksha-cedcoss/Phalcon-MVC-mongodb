@@ -1,0 +1,94 @@
+<?php
+// foreach ($product as $v) {
+//     echo $v->name;
+// }
+?>
+<div class="col-xs-12">
+
+    <div class="col-md-12">
+        <form id="form" method="post">
+            <h3> Place New Order</h3>
+            <input name="variation" hidden value="" id="variation">
+            <div id="field">
+                <div id="field0">
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="product_id">Product Name</label>
+                        <div class="col-md-5">
+                            <select name="product_id" id="product_id">
+                                <?php
+                                foreach ($product as $p) {
+                                    echo '<option value="' . $p->_id . '">' . $p->name . '</option>';
+                                }
+                                ?>
+                            </select>
+                            <input hidden name="product_name" id="product_name" value="">
+                        </div>
+                    </div>
+                    <br><br>
+                    <!-- Text input-->
+                    <div class="form-group variation_select">
+                        <label class="col-md-4 control-label" for="category">Select Variation</label>
+                        <div class="col-md-5">
+                            <select name="variation" id="variation1">
+                            </select>
+                        </div>
+                    </div>
+                    <br><br>
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="customer">Customer Name</label>
+                        <div class="col-md-5">
+                            <input id="customer" name="customer" type="text" min="0" placeholder="" class="form-control input-md">
+                        </div>
+                    </div>
+                    <br><br>
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="quantity">Quantity</label>
+                        <div class="col-md-5">
+                            <input id="quantity" name="quantity" type="number" min="0" placeholder="" class="form-control input-md">
+
+                        </div>
+                    </div>
+                    <br><br>
+
+                </div>
+            </div>
+            <br><br>
+            <input type="submit" class="btn btn-success" value="Place Order">
+        </form>
+    </div>
+
+</div>
+
+
+<script>
+    $(document).ready(function() {
+        $('#product_id').on('change', function() {
+            $('#variation1').html('');
+            $('#product_name').val($("#product_id option:selected").text());
+            $.ajax({
+                    method: "POST",
+                    url: "http://localhost:8080/product/getProductAdditionalData",
+                    data: {
+                        product_id: this.value,
+                    },
+                    datatype: 'JSON'
+                })
+                .done(function(product) {
+                    product = $.parseJSON(product);
+                    let html = '';
+                    for (var target in product['variations']) {
+                        html ='';
+                        for (var v in product['variations'][target]) {
+                            if (product['variations'][target].hasOwnProperty(v)) {
+                                html += v + ' : ' + product['variations'][target][v] + ' || ';
+                            }
+                        }
+                        $('#variation1').append('<option value="'+html+'">'+html+'</option>');
+                    }
+                })
+        });
+    });
+</script>

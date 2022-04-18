@@ -84,7 +84,6 @@ echo PHP_EOL;
                 })
                 .done(function(product) {
                     product = $.parseJSON(product);
-                    console.log(product);
                     for (var k in product['meta_information']) {
                         if (product['meta_information'].hasOwnProperty(k)) {
                             $('div.meta-tag').append("<p>" + k + " : " + product['meta_information'][k]);

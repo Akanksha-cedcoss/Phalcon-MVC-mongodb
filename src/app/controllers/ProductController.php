@@ -13,7 +13,6 @@ class ProductController extends Controller
     public function viewAllProductsAction()
     {
         $Product = new Product;
-
         if ($_POST) {
             $name = $this->request->getPost("search");
             $this->view->products = $Product->getProductByName($name);
